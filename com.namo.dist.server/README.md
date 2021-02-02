@@ -34,3 +34,13 @@ docker run -p HOST_PORT:8500 -v ABSOLUTE_FILES_DIR:/usr/src/myserver/files pkasl
 Post collection available in tests/postman folder.
 Test collection and env files will need to be imported into Postman desktop app and change the port env variable to HOST_PORT used in the server deployment.
 Default port value defined is 8500 which will work out of the box.
+
+
+	Project structure
+	1] files directory contains testfiles of different types
+	2] src directory has java code
+	3] tests directory has postman test files
+	4] Rest of the files: 
+		Dockerfile for dockerization
+		README
+		
