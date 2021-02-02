@@ -12,12 +12,16 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
+/**
+ * Multi threaded static file server encapsulating sun's {@link HttpServer} and delegating to {@link StaticFileHandler} or  {@link FileListHandler} depending on the request.
+ */
 public class StaticFileHttpServer {
 
 	// ThreadPoolSize could be defined using an env variable to add flexibility
 	// based on where its deployed and requirements
 	private static final ExecutorService executors = Executors
 			.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+	
 	// Files directory could be defined using environment variable to add
 	// flexibility
 	private static final String FILES_DIR = "files";
@@ -25,6 +29,7 @@ public class StaticFileHttpServer {
 	private static final String SERVER_PORT_STR = System.getenv("SERVER_PORT");
 	private static final String LOG_LEVEL_STR = System.getenv("LOG_LEVEL");
 	private static int SERVER_PORT = 8500;
+	
 	// TODO Logger log level needs to be configured
 	private static Level LOG_LEVEL = Level.INFO;
 	private static final Logger logger = Logger.getLogger(StaticFileHttpServer.class.getName());
@@ -83,7 +88,7 @@ public class StaticFileHttpServer {
 	private void handleRequest(HttpExchange exchange) throws IOException {
 		OutputStream out = exchange.getResponseBody();
 		try {
-			// What about trailing slash?
+			// TODO handle trailing slash
 			if (STATIC_FILES_PATH.equals(exchange.getRequestURI().getPath())) {
 				this.fileListHandler.handle(exchange);
 			} else if (exchange.getRequestURI().getPath().startsWith(STATIC_FILES_PATH)) {

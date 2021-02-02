@@ -1,5 +1,9 @@
 package com.namo.dist.server.rrprocessors;
 
+/**
+ * Parser for HttpRange request header to extract the request start offset and
+ * length of the requested range.
+ */
 class RangeParser {
 
 	private int startIndex = 0;
