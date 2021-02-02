@@ -9,22 +9,28 @@ import java.util.logging.Logger;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+/**
+ * Handles request for returning list of static files available at the configured location.  
+ */
 class FileListHandler implements HttpHandler {
 
 	private static final Logger logger = Logger.getLogger(FileListHandler.class.getName());
+	
 	private String filesDir;
 
 	FileListHandler(String filesDirectory) {
 		filesDir = filesDirectory;
 	}
 
+	/**
+	 * Writes list of files separated by newline characters on the response output stream.
+	 */
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
 		listFiles(exchange);
 	}
 
 	// TODO Need to change response to json
-	// System outs need to be changed to logger
 	private void listFiles(HttpExchange exchange) throws IOException {
 		OutputStream out = exchange.getResponseBody();
 		exchange.getResponseHeaders().add("Content-Type", "text/html");
@@ -34,7 +40,7 @@ class FileListHandler implements HttpHandler {
 			File[] files = path.listFiles((File f) -> {
 				return f.isFile();
 			});
-			System.out.println("number of files" + files.length);
+			logger.log(Level.INFO,"number of files" + files.length);
 			StringBuffer namesBuffer = new StringBuffer();
 			for (int fileIndex = 0; fileIndex < files.length; fileIndex++) {
 				namesBuffer.append(files[fileIndex].getName());
@@ -44,7 +50,7 @@ class FileListHandler implements HttpHandler {
 			exchange.sendResponseHeaders(200, outBytes.length);
 			out.write(outBytes);
 		} else {
-			System.err.println("File not found: " + path.getAbsolutePath());
+			logger.log(Level.SEVERE,"Directory not found: " + path.getAbsolutePath());
 
 			exchange.sendResponseHeaders(404, 0);
 			out.write("404 File not found.".getBytes());

@@ -7,6 +7,9 @@ import com.namo.dist.server.rrprocessors.RRProcessorFactory;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+/**
+ * Handler for processing a static file retrieval request.
+ */
 class StaticFileHandler implements HttpHandler {
 
 	private static final Logger logger = Logger.getLogger(StaticFileHandler.class.getName());
@@ -15,10 +18,10 @@ class StaticFileHandler implements HttpHandler {
 
 	private long cacheMaxAge = 604800l; // by default Keeping cache max age as 7 days
 
-	public StaticFileHandler() {
+	StaticFileHandler() {
 	}
 
-	public StaticFileHandler(boolean supportHttpRange, long cacheMaxAge) {
+	StaticFileHandler(boolean supportHttpRange, long cacheMaxAge) {
 		this.supportHttpRange = supportHttpRange;
 		this.cacheMaxAge = cacheMaxAge;
 	}
@@ -27,13 +30,20 @@ class StaticFileHandler implements HttpHandler {
 	public void handle(HttpExchange exchange) throws IOException {
 
 		logger.log(Level.INFO, "Processing a static file request....");
+		
 		// TODO this request response processor chaining could be improved
 		// Configuring chain of processors
+		// First one checks if file exists
 		RequestResponseProcessor firstProcessor = RRProcessorFactory.INSTANCE.getFileExistsRRProcessor();
+		// Generates and compares Etag headers
 		RequestResponseProcessor processorChain = firstProcessor.appendNext(RRProcessorFactory.INSTANCE.getETagRRProcessor());
+		// Checks modified timestamp on the file and add the response header accordingly
 		processorChain = processorChain.appendNext(RRProcessorFactory.INSTANCE.getLastModifiedRRProcessor());
+		// Terminates the pipeline if its a preflight request with 200 response code
 		processorChain = processorChain.appendNext(RRProcessorFactory.INSTANCE.getPreFlightRRProcessor());
+		// Adds cache-control response header based on the configured cache max age
 		processorChain = processorChain.appendNext(RRProcessorFactory.INSTANCE.getCacheControlRRProcessor());
+		// Performs file access as needed to retrieve the request file/http range.
 		processorChain = processorChain.appendNext(RRProcessorFactory.INSTANCE.getFileRRProcessor());
 
 		// Request context which will be passed between processors

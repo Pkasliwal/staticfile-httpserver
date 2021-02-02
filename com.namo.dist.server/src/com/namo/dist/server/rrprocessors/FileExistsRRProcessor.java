@@ -8,6 +8,9 @@ import com.namo.dist.server.RequestContext;
 import com.namo.dist.server.RequestResponseProcessor;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Processor to verify if file exists and append required response headers.
+ */
 class FileExistsRRProcessor implements RequestResponseProcessor {
 
 	// Files directory could be defined using environment variable to add
@@ -16,6 +19,9 @@ class FileExistsRRProcessor implements RequestResponseProcessor {
 
 	private RequestResponseProcessor nextProcessor;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void process(HttpExchange exchange, RequestContext ctx) throws IOException {
 
@@ -25,9 +31,11 @@ class FileExistsRRProcessor implements RequestResponseProcessor {
 
 		if (requestFile.exists()) {
 			ctx.setRequestedFile(requestFile);
+			// Adding basic response headers for the requested file
 			exchange.getResponseHeaders().set("Content-Type", ctx.getRequestedFileProcessor().getContentType());
-			exchange.getResponseHeaders().set("Content-Length", ctx.getRequestedFileProcessor().getFileLengthBytes().toString());
-			exchange.getResponseHeaders().set("Accept-Ranges", ctx.isAcceptRanges()?"bytes":"none");
+			exchange.getResponseHeaders().set("Content-Length",
+					ctx.getRequestedFileProcessor().getFileLengthBytes().toString());
+			exchange.getResponseHeaders().set("Accept-Ranges", ctx.isAcceptRanges() ? "bytes" : "none");
 		} else {
 			ctx.setResponseCode(404);
 			System.err.println("File not found: " + requestFile.getAbsolutePath());
@@ -38,6 +46,9 @@ class FileExistsRRProcessor implements RequestResponseProcessor {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public RequestResponseProcessor appendNext(RequestResponseProcessor processor) {
 		return nextProcessor = processor;

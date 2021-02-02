@@ -7,12 +7,19 @@ import com.namo.dist.server.RequestContext;
 import com.namo.dist.server.RequestResponseProcessor;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Processor to check last modified timestamp on the file and add the response
+ * header accordingly
+ */
 class LastModifiedRRProcessor implements RequestResponseProcessor {
 
 	private static final String LASTMODIFIED_RES_HEADER_KEY = "Last-Modified";
 	private static final String IF_MODIFIED_SINCE_HEADER = "If-Modified-Since";
 	private RequestResponseProcessor nextProcessor;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void process(HttpExchange exchange, RequestContext ctx) throws IOException {
 		if (ctx.getResponseCode() > 0)
@@ -20,10 +27,16 @@ class LastModifiedRRProcessor implements RequestResponseProcessor {
 
 		String lastModifiedStr = ctx.getRequestedFileProcessor()
 				.getLastModifiedTime(DateTimeFormatter.RFC_1123_DATE_TIME);
+		// setting last modified date in required format on response header
 		exchange.getResponseHeaders().set(LASTMODIFIED_RES_HEADER_KEY, lastModifiedStr);
+
 		if (exchange.getRequestHeaders().containsKey(IF_MODIFIED_SINCE_HEADER)
 				&& !exchange.getRequestHeaders().get(IF_MODIFIED_SINCE_HEADER).isEmpty()) {
 			String modifiedSinceStr = exchange.getRequestHeaders().getFirst(IF_MODIFIED_SINCE_HEADER);
+
+			// Checking if the last modified date on file is after IF_MODIFIED_SINCE_HEADER,
+			// if not then browsers cache copy is still good, hence return 304 response
+			// code.
 			if (!ctx.getRequestedFileProcessor().isModifiedAfter(modifiedSinceStr,
 					DateTimeFormatter.RFC_1123_DATE_TIME)) {
 				ctx.setResponseCode(304);
@@ -34,6 +47,9 @@ class LastModifiedRRProcessor implements RequestResponseProcessor {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public RequestResponseProcessor appendNext(RequestResponseProcessor processor) {
 		return nextProcessor = processor;
