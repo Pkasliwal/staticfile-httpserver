@@ -26,6 +26,7 @@ http://localhost:{{HOST_PORT}}/staticfiles/solah01.mp3
 
 http://localhost:{{HOST_PORT}}/staticfiles/simple-test.txt
 
+
 	Command to mount other files:
 docker run -p HOST_PORT:8500 -v ABSOLUTE_FILES_DIR:/usr/src/myserver/files pkasliwal/com.namo.dist.server.staticfileserver:1.0
 
