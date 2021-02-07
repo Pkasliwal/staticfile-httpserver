@@ -32,7 +32,9 @@ public interface RequestContext {
 	 * @param responseCode response code
 	 */
 	void setResponseCode(int responseCode);
-
+	
+	void setResponseBytes(byte[] responseBytes);
+	byte[] getResponseBytes();
 	/**
 	 * Checks if the server can handle range requests, if so, return true otherwise false.
 	 * @return true when server can respond to range requests, otherwise false.

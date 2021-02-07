@@ -3,6 +3,8 @@ package com.namo.dist.server;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,29 +32,27 @@ class FileListHandler implements HttpHandler {
 		listFiles(exchange);
 	}
 
-	// TODO Need to change response to json
 	private void listFiles(HttpExchange exchange) throws IOException {
 		OutputStream out = exchange.getResponseBody();
 		exchange.getResponseHeaders().add("Content-Type", "text/html");
 		File path = new File(filesDir);
 		if (path.exists()) {
-			logger.log(Level.INFO,"Directory path: " + path.getAbsolutePath());
+			logger.log(Level.FINE,"Directory path: " + path.getAbsolutePath());
 			File[] files = path.listFiles((File f) -> {
 				return f.isFile();
 			});
-			logger.log(Level.INFO,"number of files" + files.length);
-			StringBuffer namesBuffer = new StringBuffer();
-			for (int fileIndex = 0; fileIndex < files.length; fileIndex++) {
-				namesBuffer.append(files[fileIndex].getName());
-				namesBuffer.append("\n");
+			List<String> fileNames = new ArrayList<>(files.length);
+			for(int fileIndex=0;fileIndex<files.length; fileIndex++) {
+				fileNames.add(files[fileIndex].getName());
 			}
-			byte[] outBytes = namesBuffer.toString().getBytes();
-			exchange.sendResponseHeaders(200, outBytes.length);
+			logger.log(Level.INFO,"number of files " + files.length);
+			byte[] outBytes = fileNames.toString().getBytes();
+			exchange.sendResponseHeaders(ResponseCodes.SUCCESSFUL.getResponseCode(), outBytes.length);
 			out.write(outBytes);
 		} else {
 			logger.log(Level.SEVERE,"Directory not found: " + path.getAbsolutePath());
 
-			exchange.sendResponseHeaders(404, 0);
+			exchange.sendResponseHeaders(ResponseCodes.NOT_FOUND.getResponseCode(), 0);
 			out.write("404 File not found.".getBytes());
 		}
 

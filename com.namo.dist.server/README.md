@@ -20,6 +20,7 @@ Once project is cloned from here: https://github.com/Pkasliwal/staticfile-httpse
 1] Build jar (jar will be generated in target directory with this command): 
 
 	mvn package
+	mvn package -DskipTests (to skip test execution)
 2] Execute tests: 
 
 	mvn test
@@ -29,7 +30,7 @@ Once project is cloned from here: https://github.com/Pkasliwal/staticfile-httpse
 4] Clean, Build, Deploy, Test, for all: 
 
 	mvn clean install
-5] Run/Execute the server on port 8500: 
+5] Run/Execute the server on port 8500 (set env variable SERVER_PORT to customize and env LOG_LEVEL if need to be different than INFO before running this command): 
 
 	mvn exec:java
 6] Run/Execute the server using jar file available in target directory (Xmx configuration can be changed as needed)
@@ -45,7 +46,7 @@ I have dockerized the server and is available on docker hub with image name: pka
 Command to run the server (-m parameter is optional to configure memory allocation for the server container):
 
 	docker run -m3GB -p HOST_PORT:8500 pkasliwal/com.namo.dist.server.staticfileserver:2.0.0
-
+	docker run -m3GB -p HOST_PORT:8500 -e LOG_LEVEL="FINE" pkasliwal/com.namo.dist.server.staticfileserver:2.0.0
 Above server has some static example files in-built and can be accessed using following urls:
 
 http://localhost:{{HOST_PORT}}/staticfiles/Serverless_comparison.pdf

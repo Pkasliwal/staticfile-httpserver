@@ -3,6 +3,7 @@ package com.namo.dist.server.rrprocessors;
 import java.io.IOException;
 
 import com.namo.dist.server.RequestContext;
+import com.namo.dist.server.RequestResponseExchange;
 import com.namo.dist.server.RequestResponseProcessor;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -19,7 +20,7 @@ class ETagRRProcessor implements RequestResponseProcessor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void process(HttpExchange exchange, RequestContext ctx) throws IOException {
+	public void process(RequestResponseExchange exchange, RequestContext ctx) throws IOException {
 		if (ctx.getResponseCode() > 0)
 			return;
 
