@@ -15,7 +15,7 @@ public interface RequestResponseProcessor {
 	 * @param ctx context holding any processing information to be passed on to next processor.
 	 * @throws IOException exception thrown when there is an issue processing the file request.
 	 */
-	void process(HttpExchange exchange, RequestContext ctx) throws IOException;
+	void process(RequestResponseExchange exchange, RequestContext ctx) throws IOException;
 	
 	/**
 	 * Configuring the next processor in the pipeline.

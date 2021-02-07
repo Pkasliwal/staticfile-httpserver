@@ -10,8 +10,8 @@ class RequestContextImpl implements RequestContext {
 	private RequestFileProcessor requestedFileProcessor;
 
 	private int responseCode = 0;
+	private byte[] responseBytes;
 	private boolean acceptRanges = true; // by default supporting http range headers
-
 	private long cacheMaxAge = 604800; // by default Keeping cache max age as 7 days
 
 	/**
@@ -77,5 +77,15 @@ class RequestContextImpl implements RequestContext {
 	@Override
 	public long getCacheMaxAge() {
 		return cacheMaxAge;
+	}
+
+	@Override
+	public void setResponseBytes(byte[] responseBytes) {
+		this.responseBytes = responseBytes;
+	}
+	
+	@Override
+	public byte[] getResponseBytes() {
+		return responseBytes;
 	}
 }

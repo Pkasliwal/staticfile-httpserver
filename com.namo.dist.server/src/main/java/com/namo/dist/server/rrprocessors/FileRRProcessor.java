@@ -3,6 +3,7 @@ package com.namo.dist.server.rrprocessors;
 import java.io.IOException;
 
 import com.namo.dist.server.RequestContext;
+import com.namo.dist.server.RequestResponseExchange;
 import com.namo.dist.server.RequestResponseProcessor;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -17,7 +18,7 @@ class FileRRProcessor implements RequestResponseProcessor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void process(HttpExchange exchange, RequestContext ctx) throws IOException {
+	public void process(RequestResponseExchange exchange, RequestContext ctx) throws IOException {
 		if (ctx.getResponseCode() > 0)
 			return;
 		long startIndex = 0;
@@ -42,8 +43,7 @@ class FileRRProcessor implements RequestResponseProcessor {
 
 				// When returning partial range, success response code is 206
 				ctx.setResponseCode(206);
-				exchange.sendResponseHeaders(206, length);
-				exchange.getResponseBody().write(ctx.getRequestedFileProcessor().readByteRange(startIndex, length));
+				ctx.setResponseBytes(ctx.getRequestedFileProcessor().readByteRange(startIndex, length));
 			} else {
 				// Failure code for partial range retrieval is 416
 				ctx.setResponseCode(416);
@@ -51,8 +51,7 @@ class FileRRProcessor implements RequestResponseProcessor {
 		} else {
 			// case when retrieving the complete file
 			ctx.setResponseCode(200);
-			exchange.sendResponseHeaders(200, length);
-			exchange.getResponseBody().write(ctx.getRequestedFileProcessor().readByteRange(startIndex, length));
+			ctx.setResponseBytes(ctx.getRequestedFileProcessor().readByteRange(startIndex, length));
 		}
 		if (nextProcessor != null) {
 			nextProcessor.process(exchange, ctx);

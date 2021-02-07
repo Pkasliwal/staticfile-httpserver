@@ -50,12 +50,14 @@ class StaticFileHandler implements HttpHandler {
 		RequestContext reqContext = new RequestContextImpl(supportHttpRange, cacheMaxAge);
 
 		// processing the HttpExchange now
-		firstProcessor.process(exchange, reqContext);
+		firstProcessor.process(new RequestResponseExchangeImpl(exchange), reqContext);
 
 		if (reqContext.getResponseCode() < 200 || reqContext.getResponseCode() >= 300) {
 			exchange.sendResponseHeaders(reqContext.getResponseCode(), 0);
+		} else {
+			exchange.sendResponseHeaders(reqContext.getResponseCode(), reqContext.getResponseBytes().length);
+			exchange.getResponseBody().write(reqContext.getResponseBytes());
 		}
-
 	}
 
 }

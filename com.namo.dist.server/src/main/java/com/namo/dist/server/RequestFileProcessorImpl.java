@@ -45,8 +45,7 @@ class RequestFileProcessorImpl implements RequestFileProcessor {
 	@Override
 	public String getLastModifiedTime(DateTimeFormatter dtFormat) {
 		OffsetDateTime lastModifiedOffsetTime = Instant.ofEpochMilli(sourceFile.lastModified()).atOffset( ZoneOffset.UTC );
-		// Required format - <day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT
-		return lastModifiedOffsetTime.format(dtFormat);//DateTimeFormatter.RFC_1123_DATE_TIME);
+		return lastModifiedOffsetTime.format(dtFormat);
 		
 	}
 	
