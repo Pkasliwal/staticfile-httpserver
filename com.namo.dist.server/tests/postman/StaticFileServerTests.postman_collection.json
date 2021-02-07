@@ -24,7 +24,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:{{port}}/staticfiles/Serverless_comparison.pdf",
+					"raw": "http://localhost:{{port}}/staticfiles/Serverless.pdf",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -32,7 +32,7 @@
 					"port": "{{port}}",
 					"path": [
 						"staticfiles",
-						"Serverless_comparison.pdf"
+						"Serverless.pdf"
 					]
 				}
 			},
@@ -90,7 +90,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:{{port}}/staticfiles/solah01.mp3",
+					"raw": "http://localhost:{{port}}/staticfiles/rhythm.mp3",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -98,7 +98,7 @@
 					"port": "{{port}}",
 					"path": [
 						"staticfiles",
-						"solah01.mp3"
+						"rhythm.mp3"
 					]
 				}
 			},

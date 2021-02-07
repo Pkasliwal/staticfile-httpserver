@@ -53,10 +53,12 @@ class StaticFileHandler implements HttpHandler {
 		firstProcessor.process(new RequestResponseExchangeImpl(exchange), reqContext);
 
 		if (reqContext.getResponseCode() < 200 || reqContext.getResponseCode() >= 300) {
-			exchange.sendResponseHeaders(reqContext.getResponseCode(), 0);
+			// -1 for indicating no response body will be written/returned
+			exchange.sendResponseHeaders(reqContext.getResponseCode(), -1);
 		} else {
 			exchange.sendResponseHeaders(reqContext.getResponseCode(), reqContext.getResponseBytes().length);
 			exchange.getResponseBody().write(reqContext.getResponseBytes());
+			exchange.getResponseBody().close();
 		}
 	}
 

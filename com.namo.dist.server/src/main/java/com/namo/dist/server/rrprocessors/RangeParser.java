@@ -52,7 +52,7 @@ class RangeParser {
 			}
 		}
 
-		if (!validStr || startIndex >= length || lastIndex >= length) {
+		if (!validStr || startIndex >= length || lastIndex >= length || startIndex < 0 || startIndex > lastIndex) {
 			return false;
 		}
 		return true;

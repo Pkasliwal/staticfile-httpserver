@@ -6,11 +6,12 @@ import java.time.format.DateTimeFormatter;
 import com.namo.dist.server.RequestContext;
 import com.namo.dist.server.RequestResponseExchange;
 import com.namo.dist.server.RequestResponseProcessor;
-import com.sun.net.httpserver.HttpExchange;
 
 /**
  * Processor to check last modified timestamp on the file and add the response
- * header accordingly
+ * header accordingly. Also if request header contains cached file last
+ * modification timestamp, then compre the cached to current time stamp and if
+ * cached one happens to be up-to-date then returns 304 response.
  */
 class LastModifiedRRProcessor implements RequestResponseProcessor {
 

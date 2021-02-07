@@ -116,10 +116,11 @@ public class StaticFileHttpServer {
 			} else if (exchange.getRequestURI().getPath().startsWith(STATIC_FILES_PATH)) {
 				this.staticFileHandler.handle(exchange);
 			} else {
-				exchange.sendResponseHeaders(ResponseCodes.NOT_FOUND.getResponseCode(), 0);
-				out.write("Provided path not allowed.".getBytes());
+				// -1 for indicating no response body will be written/returned
+				exchange.sendResponseHeaders(ResponseCodes.NOT_FOUND.getResponseCode(), -1);
 			}
 		} catch (IOException ex) {
+			exchange.sendResponseHeaders(ResponseCodes.INTERNAL_SERVER_ERROR.getResponseCode(), -1);
 			logger.log(Level.SEVERE, "IOException while handling the request" + exchange.getRequestURI().getPath(), ex);
 			throw ex;
 		} finally {
