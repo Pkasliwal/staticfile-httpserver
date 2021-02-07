@@ -5,10 +5,11 @@ import java.io.IOException;
 import com.namo.dist.server.RequestContext;
 import com.namo.dist.server.RequestResponseExchange;
 import com.namo.dist.server.RequestResponseProcessor;
-import com.sun.net.httpserver.HttpExchange;
 
 /**
- * Adds cache-control response header based on the configured cache max age.
+ * Adds cache-control response header based on the configured cache max age
+ * indicating file is good to be cached for this amount of time and won't be
+ * needed to be retrieved again during this duration.
  */
 class CacheControlRRProcessor implements RequestResponseProcessor {
 

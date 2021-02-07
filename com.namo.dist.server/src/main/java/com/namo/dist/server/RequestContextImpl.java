@@ -12,7 +12,7 @@ class RequestContextImpl implements RequestContext {
 	private int responseCode = 0;
 	private byte[] responseBytes;
 	private boolean acceptRanges = true; // by default supporting http range headers
-	private long cacheMaxAge = 604800; // by default Keeping cache max age as 7 days
+	private long cacheMaxAge = 604800; // by default Keeping cache max age as 7 days in seconds
 
 	/**
 	 * Default constructor to define cacheMaxAge of 7 days and accepts range requests.

@@ -5,14 +5,16 @@ import java.io.IOException;
 import com.namo.dist.server.RequestContext;
 import com.namo.dist.server.RequestResponseExchange;
 import com.namo.dist.server.RequestResponseProcessor;
-import com.sun.net.httpserver.HttpExchange;
+import com.namo.dist.server.ResponseCodes;
 
 /**
- * Performs file access as needed to retrieve the request file/http range bytes. 
+ * Performs file access as needed to retrieve the request file/http range bytes.
  */
 class FileRRProcessor implements RequestResponseProcessor {
 
 	private RequestResponseProcessor nextProcessor;
+	private static int BYTE_LEN_1MB = 1000000;
+	private static int BYTE_LEN_5MB = 5000000;
 
 	/**
 	 * {@inheritDoc}
@@ -29,7 +31,7 @@ class FileRRProcessor implements RequestResponseProcessor {
 		// requested.
 		// Server can choose to respond with complete file even when a range is
 		// requested as defined in the protocol
-		if (fullLength > 1000000 && exchange.getRequestHeaders().containsKey("Range")
+		if (fullLength > BYTE_LEN_1MB && exchange.getRequestHeaders().containsKey("Range")
 				&& !exchange.getRequestHeaders().getFirst("Range").isEmpty()) {
 
 			// RangeParser parses the header information to extract the requested range to
@@ -38,20 +40,29 @@ class FileRRProcessor implements RequestResponseProcessor {
 			if (parser.parse()) {
 				startIndex = parser.getStartIndex();
 				length = parser.getLength();
-				exchange.getResponseHeaders().set("Content-Range", parser.contentRange());
-				exchange.getResponseHeaders().set("Content-Length", String.valueOf(length));
+				if (length > BYTE_LEN_5MB) {
+					// Requested range is too big
+					ctx.setResponseCode(ResponseCodes.FILE_TOO_BIG.getResponseCode());
+				} else {
+					exchange.getResponseHeaders().set("Content-Range", parser.contentRange());
+					exchange.getResponseHeaders().set("Content-Length", String.valueOf(length));
 
-				// When returning partial range, success response code is 206
-				ctx.setResponseCode(206);
-				ctx.setResponseBytes(ctx.getRequestedFileProcessor().readByteRange(startIndex, length));
+					// When returning partial range, success response code is 206
+					ctx.setResponseCode(ResponseCodes.PARTIAL.getResponseCode());
+					ctx.setResponseBytes(ctx.getRequestedFileProcessor().readByteRange(startIndex, length));
+				}
 			} else {
 				// Failure code for partial range retrieval is 416
-				ctx.setResponseCode(416);
+				ctx.setResponseCode(ResponseCodes.PARTIAL_FAILURE.getResponseCode());
 			}
 		} else {
 			// case when retrieving the complete file
-			ctx.setResponseCode(200);
-			ctx.setResponseBytes(ctx.getRequestedFileProcessor().readByteRange(startIndex, length));
+			if (fullLength > BYTE_LEN_5MB) {
+				ctx.setResponseCode(ResponseCodes.FILE_TOO_BIG.getResponseCode());
+			} else {
+				ctx.setResponseCode(ResponseCodes.SUCCESSFUL.getResponseCode());
+				ctx.setResponseBytes(ctx.getRequestedFileProcessor().readByteRange(startIndex, length));
+			}
 		}
 		if (nextProcessor != null) {
 			nextProcessor.process(exchange, ctx);

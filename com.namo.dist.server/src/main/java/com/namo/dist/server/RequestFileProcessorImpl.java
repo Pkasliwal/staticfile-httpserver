@@ -79,7 +79,6 @@ class RequestFileProcessorImpl implements RequestFileProcessor {
 	@Override
 	public byte[] readByteRange(long startingOffset, int length) throws IOException
 	  {
-		// TODO should add a check if startingOffset+length <= file length
 	      try (RandomAccessFile randomAccessFile = new RandomAccessFile(sourceFile, "r"))
 	      {
 	          byte[] buffer = new byte[length];

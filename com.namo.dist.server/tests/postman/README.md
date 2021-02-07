@@ -10,11 +10,11 @@ postman app to the defined port.
 Running following Happy path tests as part of the collection, one can run them on the browser too:
 Default port used by server: 8500
 
-http://localhost:{{port}}/staticfiles/Serverless_comparison.pdf
+http://localhost:{{port}}/staticfiles/Serverless.pdf
 
 http://localhost:{{port}}/staticfiles/light_green.jpg
 
-http://localhost:{{port}}/staticfiles/solah01.mp3
+http://localhost:{{port}}/staticfiles/rhythm.mp3
 
 http://localhost:{{port}}/staticfiles/simple-test.txt
 

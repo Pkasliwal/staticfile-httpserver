@@ -49,11 +49,11 @@ Command to run the server (-m parameter is optional to configure memory allocati
 	docker run -m3GB -p HOST_PORT:8500 -e LOG_LEVEL="FINE" pkasliwal/com.namo.dist.server.staticfileserver:2.0.0
 Above server has some static example files in-built and can be accessed using following urls:
 
-http://localhost:{{HOST_PORT}}/staticfiles/Serverless_comparison.pdf
+http://localhost:{{HOST_PORT}}/staticfiles/Serverless.pdf
 
 http://localhost:{{HOST_PORT}}/staticfiles/light_green.jpg
 
-http://localhost:{{HOST_PORT}}/staticfiles/solah01.mp3
+http://localhost:{{HOST_PORT}}/staticfiles/rhythm.mp3
 
 http://localhost:{{HOST_PORT}}/staticfiles/simple-test.txt
 
