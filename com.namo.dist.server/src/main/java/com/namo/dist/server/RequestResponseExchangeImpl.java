@@ -28,4 +28,9 @@ class RequestResponseExchangeImpl implements RequestResponseExchange {
 		return exchange.getResponseHeaders();
 	}
 
+	@Override
+	public String getRequestMethod() {
+		return exchange.getRequestMethod();
+	}
+
 }

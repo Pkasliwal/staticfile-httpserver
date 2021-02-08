@@ -15,8 +15,8 @@ import com.namo.dist.server.RequestResponseProcessor;
  */
 class LastModifiedRRProcessor implements RequestResponseProcessor {
 
-	private static final String LASTMODIFIED_RES_HEADER_KEY = "Last-Modified";
-	private static final String IF_MODIFIED_SINCE_HEADER = "If-Modified-Since";
+	static final String LASTMODIFIED_RES_HEADER_KEY = "Last-Modified";
+	static final String IF_MODIFIED_SINCE_HEADER = "If-Modified-Since";
 	private RequestResponseProcessor nextProcessor;
 
 	/**

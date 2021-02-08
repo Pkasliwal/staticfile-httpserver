@@ -6,22 +6,22 @@ package com.namo.dist.server.rrprocessors;
  */
 class RangeParser {
 
-	private int startIndex = 0;
-	private int length;
+	private long startIndex = 0;
+	private long length;
 	private String rangeStr;
-	private int fullLength;
+	private long fullLength;
 
-	public RangeParser(String rangeStr, int fullLength) {
+	public RangeParser(String rangeStr, long fullLength) {
 		this.rangeStr = rangeStr;
 		this.length = fullLength;
 		this.fullLength = fullLength;
 	}
 
-	public int getStartIndex() {
+	public long getStartIndex() {
 		return startIndex;
 	}
 
-	public int getLength() {
+	public long getLength() {
 		return length;
 	}
 
@@ -36,7 +36,7 @@ class RangeParser {
 	public boolean parse() {
 		// Just parsing for one scenario for now, needs to be enhanced for other 3 cases
 		// <unit>=<range-start>-<range-end>
-		int lastIndex = 0;
+		long lastIndex = 0;
 		boolean validStr = false;
 		String[] comps = rangeStr.split("=");
 		if (comps.length > 1) {
@@ -45,6 +45,7 @@ class RangeParser {
 				try {
 					startIndex = Integer.valueOf(subComps[0].trim());
 					lastIndex = Integer.valueOf(subComps[1].trim());
+					length = lastIndex - startIndex +1;
 					validStr = true;
 				} catch (NumberFormatException ex) {
 					ex.printStackTrace();
@@ -52,7 +53,7 @@ class RangeParser {
 			}
 		}
 
-		if (!validStr || startIndex >= length || lastIndex >= length || startIndex < 0 || startIndex > lastIndex) {
+		if (!validStr || startIndex >= fullLength || lastIndex >= fullLength || startIndex < 0 || startIndex > lastIndex) {
 			return false;
 		}
 		return true;
