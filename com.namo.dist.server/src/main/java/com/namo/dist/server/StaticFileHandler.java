@@ -39,8 +39,8 @@ class StaticFileHandler implements HttpHandler {
 		RequestResponseProcessor processorChain = firstProcessor.appendNext(RRProcessorFactory.INSTANCE.getETagRRProcessor());
 		// Checks modified timestamp on the file and add the response header accordingly
 		processorChain = processorChain.appendNext(RRProcessorFactory.INSTANCE.getLastModifiedRRProcessor());
-		// Terminates the pipeline if its a preflight request with 200 response code
-		processorChain = processorChain.appendNext(RRProcessorFactory.INSTANCE.getPreFlightRRProcessor());
+		// Terminates the pipeline if its a HEAD request with 200 response code
+		processorChain = processorChain.appendNext(RRProcessorFactory.INSTANCE.getHeadRRProcessor());
 		// Adds cache-control response header based on the configured cache max age
 		processorChain = processorChain.appendNext(RRProcessorFactory.INSTANCE.getCacheControlRRProcessor());
 		// Performs file access as needed to retrieve the request file/http range.
@@ -52,13 +52,13 @@ class StaticFileHandler implements HttpHandler {
 		// processing the HttpExchange now
 		firstProcessor.process(new RequestResponseExchangeImpl(exchange), reqContext);
 
-		if (reqContext.getResponseCode() < 200 || reqContext.getResponseCode() >= 300) {
-			// -1 for indicating no response body will be written/returned
-			exchange.sendResponseHeaders(reqContext.getResponseCode(), -1);
-		} else {
+		if (reqContext.getResponseCode() >= 200 && reqContext.getResponseCode() < 300 && reqContext.getResponseBytes() != null) {
 			exchange.sendResponseHeaders(reqContext.getResponseCode(), reqContext.getResponseBytes().length);
 			exchange.getResponseBody().write(reqContext.getResponseBytes());
 			exchange.getResponseBody().close();
+		} else {
+			// -1 for indicating no response body will be written/returned
+			exchange.sendResponseHeaders(reqContext.getResponseCode(), 0);
 		}
 	}
 

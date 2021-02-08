@@ -39,4 +39,9 @@ public interface RequestResponseExchange {
      */
     public Headers getResponseHeaders () ;
     
+    /**
+     * Get the request method
+     * @return the request method
+     */
+    public String getRequestMethod();
 }

@@ -14,8 +14,8 @@ import com.namo.dist.server.RequestResponseProcessor;
  */
 class ETagRRProcessor implements RequestResponseProcessor {
 
-	private static final String ETAG_RES_HEADER_KEY = "ETag";
-	private static final String IF_MATCH_HEADER_KEY = "If-Match";
+	static final String ETAG_RES_HEADER_KEY = "ETag";
+	static final String IF_MATCH_HEADER_KEY = "If-Match";
 	private RequestResponseProcessor nextProcessor;
 
 	/**

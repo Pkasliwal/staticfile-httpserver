@@ -15,16 +15,16 @@ import com.namo.dist.server.ResponseCodes;
  * Processor to verify if file exists and append required response headers.
  */
 class FileExistsRRProcessor implements RequestResponseProcessor {
-
-	// Files directory could be defined using environment variable to add
-	// flexibility
-	private static final String FILES_DIR = "files";
-	private static final Logger logger = Logger.getLogger(FileExistsRRProcessor.class.getName());
-	
+	// Constants
 	static final String CONTENT_LENGTH = "Content-Length";
 	static final String ACCEPT_RANGE = "Accept-Ranges";
 	static final String CONTENT_TYPE = "Content-Type";
 	static final String[] EXPECTED_HEADERS = {CONTENT_LENGTH, ACCEPT_RANGE, CONTENT_TYPE};
+	
+	// Files directory could be defined using environment variable to add
+	// flexibility
+	private static final String FILES_DIR = "files";
+	private static final Logger logger = Logger.getLogger(FileExistsRRProcessor.class.getName());
 	
 	private RequestResponseProcessor nextProcessor;
 

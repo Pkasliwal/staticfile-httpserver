@@ -12,15 +12,21 @@ import com.namo.dist.server.RequestResponseExchange;
 import com.namo.dist.server.ResponseCodes;
 import com.namo.dist.server.TestUtils;
 
+/**
+ * Test cases for FileExistsRRProcessor.
+ */
 public class FileExistsRRProcessorTest {
 
+	/**
+	 * Testing scenario when file exists and appropriate response headers populated.
+	 */
 	@Test
 	public void testPositiveScenario() {
 		List<String> files = TestUtils.INSTANCE.getExpectedFilesList();
 		for (String fileName : files) {
 			URI requestUri = URI
 					.create(TestUtils.INSTANCE.getServerPath() + TestUtils.INSTANCE.getStaticFilesPath() + fileName);
-			RequestResponseExchange rrExchange = new DummyRequestResponseExchange(requestUri);
+			RequestResponseExchange rrExchange = new DummyRequestResponseExchange(requestUri, "GET");
 			RequestContext ctx = TestUtils.INSTANCE.getDummyRequestContext();
 			FileExistsRRProcessor processorToTest = new FileExistsRRProcessor();
 			try {
@@ -37,13 +43,16 @@ public class FileExistsRRProcessorTest {
 		}
 	}
 
+	/**
+	 * Testing scenario when file doesn't exists and to return correct error response code.
+	 */
 	@Test
 	public void testNegativeScenario() {
 		List<String> files = TestUtils.INSTANCE.getExpectedFilesList();
 		for (String fileName : files) {
 			URI requestUri = URI
 					.create(TestUtils.INSTANCE.getServerPath() + TestUtils.INSTANCE.getStaticFilesPath() + "abc"+fileName);
-			RequestResponseExchange rrExchange = new DummyRequestResponseExchange(requestUri);
+			RequestResponseExchange rrExchange = new DummyRequestResponseExchange(requestUri, "GET");
 			RequestContext ctx = TestUtils.INSTANCE.getDummyRequestContext();
 			FileExistsRRProcessor processorToTest = new FileExistsRRProcessor();
 			try {

@@ -5,15 +5,14 @@ import java.io.IOException;
 import com.namo.dist.server.RequestContext;
 import com.namo.dist.server.RequestResponseExchange;
 import com.namo.dist.server.RequestResponseProcessor;
-import com.sun.net.httpserver.HttpExchange;
 
 /**
- * Processor to determine if its a preflight request then terminate with 200 response code.
+ * Processor to determine if its a HEAD request then terminate with 200
+ * response code.
  */
-class PreFlightRRProcessor implements RequestResponseProcessor {
+class HeadRRProcessor implements RequestResponseProcessor {
 
-	private static final String PREFLIGHT_HEADER_KEY = "Access-Control-Request-Method";
-
+	private static final String HEAD_METHOD = "HEAD";
 	private RequestResponseProcessor nextProcessor;
 
 	/**
@@ -23,8 +22,8 @@ class PreFlightRRProcessor implements RequestResponseProcessor {
 	public void process(RequestResponseExchange exchange, RequestContext ctx) throws IOException {
 		if (ctx.getResponseCode() > 0)
 			return;
-		// checks if its a preflight request then return with success 200 code
-		if (exchange.getRequestHeaders().containsKey(PREFLIGHT_HEADER_KEY)) {
+		// checks if its HEAD request then return with success 200 code and no need to retrieve file contents 
+		if (HEAD_METHOD.equals(exchange.getRequestMethod())) {
 			ctx.setResponseCode(200);
 		}
 		if (nextProcessor != null) {

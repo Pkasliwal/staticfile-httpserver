@@ -20,6 +20,13 @@ import com.sun.net.httpserver.HttpServer;
  */
 public class StaticFileHttpServer {
 
+	// Files directory could be defined using environment variable to add
+	// flexibility
+	static final String FILES_DIR = "files";
+	static final String STATIC_FILES_PATH = "/staticfiles";
+	static final String STATIC_FILES_PATH2 = "/staticfiles/";
+	
+	
 	// ThreadPoolSize could be defined using an env variable to add flexibility
 	// based on where its deployed and requirements
 	private static final ExecutorService executors = Executors
@@ -31,13 +38,6 @@ public class StaticFileHttpServer {
 	private static Level LOG_LEVEL = Level.INFO;
 	private static final Logger logger = Logger.getLogger(StaticFileHttpServer.class.getName());
 	
-	// Files directory could be defined using environment variable to add
-	// flexibility
-	static final String FILES_DIR = "files";
-	static final String STATIC_FILES_PATH = "/staticfiles";
-	static final String STATIC_FILES_PATH2 = "/staticfiles/";
-
-
 	static {
 		if (LOG_LEVEL_STR != null) {
 			try {
@@ -74,6 +74,7 @@ public class StaticFileHttpServer {
 	public static int getServerPort() {
 		return SERVER_PORT;
 	}
+	
 	
 	// StaticFileHttpServer instance variables and methods
 	private HttpServer server = null;

@@ -24,8 +24,8 @@ class FileRRProcessor implements RequestResponseProcessor {
 		if (ctx.getResponseCode() > 0)
 			return;
 		long startIndex = 0;
-		int fullLength = ctx.getRequestedFileProcessor().getFileLengthBytes().intValue();
-		int length = fullLength;
+		long fullLength = ctx.getRequestedFileProcessor().getFileLengthBytes();
+		long length = fullLength;
 
 		// Supports range request when file size is > 1MB and range headers are being
 		// requested.
@@ -49,7 +49,7 @@ class FileRRProcessor implements RequestResponseProcessor {
 
 					// When returning partial range, success response code is 206
 					ctx.setResponseCode(ResponseCodes.PARTIAL.getResponseCode());
-					ctx.setResponseBytes(ctx.getRequestedFileProcessor().readByteRange(startIndex, length));
+					ctx.setResponseBytes(ctx.getRequestedFileProcessor().readByteRange(startIndex, (int)length));
 				}
 			} else {
 				// Failure code for partial range retrieval is 416
@@ -61,7 +61,7 @@ class FileRRProcessor implements RequestResponseProcessor {
 				ctx.setResponseCode(ResponseCodes.FILE_TOO_BIG.getResponseCode());
 			} else {
 				ctx.setResponseCode(ResponseCodes.SUCCESSFUL.getResponseCode());
-				ctx.setResponseBytes(ctx.getRequestedFileProcessor().readByteRange(startIndex, length));
+				ctx.setResponseBytes(ctx.getRequestedFileProcessor().readByteRange(startIndex, (int)length));
 			}
 		}
 		if (nextProcessor != null) {

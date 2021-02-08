@@ -9,12 +9,14 @@ class DummyRequestResponseExchange implements RequestResponseExchange {
 
 	private URI requestUri;
 	private Headers reqHeaders;
+	private String reqMethod;
 	private Headers resHeaders;
 	
-	DummyRequestResponseExchange(URI requestUri) {
+	DummyRequestResponseExchange(URI requestUri, String requestMethod) {
 		this.requestUri=requestUri;
 		reqHeaders = new Headers();
 		resHeaders = new Headers();
+		reqMethod = requestMethod;
 	}
 	
 	@Override
@@ -32,4 +34,8 @@ class DummyRequestResponseExchange implements RequestResponseExchange {
 		return resHeaders;
 	}
 
+	@Override
+	public String getRequestMethod() {
+		return reqMethod;
+	}
 }

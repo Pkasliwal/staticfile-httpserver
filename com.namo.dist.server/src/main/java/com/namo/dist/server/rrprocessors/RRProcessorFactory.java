@@ -20,8 +20,8 @@ public class RRProcessorFactory {
 	public RequestResponseProcessor getLastModifiedRRProcessor() {
 		return new LastModifiedRRProcessor();
 	}
-	public RequestResponseProcessor getPreFlightRRProcessor() {
-		return new PreFlightRRProcessor();
+	public RequestResponseProcessor getHeadRRProcessor() {
+		return new HeadRRProcessor();
 	}
 	public RequestResponseProcessor getCacheControlRRProcessor() {
 		return new CacheControlRRProcessor();
