@@ -4,6 +4,9 @@ import java.net.URI;
 
 import com.sun.net.httpserver.Headers;
 
+/**
+ * Interface provides methods for examining the request from the client, and for building response headers.
+ */
 public interface RequestResponseExchange {
 
     /**

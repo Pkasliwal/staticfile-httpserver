@@ -8,7 +8,7 @@ import com.namo.dist.server.RequestResponseProcessor;
 
 /**
  * Processor to determine if its a HEAD request then terminate with 200
- * response code.
+ * response code and response headers.
  */
 class HeadRRProcessor implements RequestResponseProcessor {
 

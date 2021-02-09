@@ -23,7 +23,7 @@ public interface RequestContext {
 	/**
 	 * Gets response code for the request ie getting processed. When a processor sets the response code, it is an indication to terminate the pipeline and respond.
 	 * Every processor's first job is to check if response code > 0 then return and terminate the pipeline.
-	 * @return response code for the request ie getting processed
+	 * @return response code for the request ie getting processed.
 	 */
 	int getResponseCode();
 
@@ -33,7 +33,16 @@ public interface RequestContext {
 	 */
 	void setResponseCode(int responseCode);
 	
+	/**
+	 * Sets response bytes on this request context.
+	 * @param responseBytes response bytes to be written to response output stream.
+	 */
 	void setResponseBytes(byte[] responseBytes);
+	
+	/**
+	 * Gets response bytes from this request context.
+	 * @return response bytes to be written to response output stream.
+	 */
 	byte[] getResponseBytes();
 	/**
 	 * Checks if the server can handle range requests, if so, return true otherwise false.

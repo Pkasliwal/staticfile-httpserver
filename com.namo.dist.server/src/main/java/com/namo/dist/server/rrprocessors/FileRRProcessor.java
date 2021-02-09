@@ -8,12 +8,15 @@ import com.namo.dist.server.RequestResponseProcessor;
 import com.namo.dist.server.ResponseCodes;
 
 /**
- * Performs file access as needed to retrieve the request file/http range bytes.
+ * Performs file access as needed to retrieve the requested complete file/http range bytes.
  */
 class FileRRProcessor implements RequestResponseProcessor {
 
 	private RequestResponseProcessor nextProcessor;
+	
+	// Http range response ie partial file contents only supported for files>1MB
 	private static int BYTE_LEN_1MB = 1000000;
+	// Complete file retrieval only supported for files<= 5MB
 	private static int BYTE_LEN_5MB = 5000000;
 
 	/**
