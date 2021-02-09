@@ -58,7 +58,7 @@ class StaticFileHandler implements HttpHandler {
 			exchange.getResponseBody().close();
 		} else {
 			// -1 for indicating no response body will be written/returned
-			exchange.sendResponseHeaders(reqContext.getResponseCode(), 0);
+			exchange.sendResponseHeaders(reqContext.getResponseCode(), -1);
 		}
 	}
 

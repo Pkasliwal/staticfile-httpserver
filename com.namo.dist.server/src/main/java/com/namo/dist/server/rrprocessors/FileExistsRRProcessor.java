@@ -37,7 +37,7 @@ class FileExistsRRProcessor implements RequestResponseProcessor {
 		URI reqUri = exchange.getRequestURI();
 		String name = new File(reqUri.getPath()).getName();
 		File requestFile = new File(FILES_DIR, name);
-
+		logger.log(Level.INFO, "Request for file: "+ name); 
 		if (requestFile.exists()) {
 			ctx.setRequestedFile(requestFile);
 			// Adding basic response headers for the requested file

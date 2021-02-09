@@ -79,11 +79,17 @@ class RequestContextImpl implements RequestContext {
 		return cacheMaxAge;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setResponseBytes(byte[] responseBytes) {
 		this.responseBytes = responseBytes;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public byte[] getResponseBytes() {
 		return responseBytes;

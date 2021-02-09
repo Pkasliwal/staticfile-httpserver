@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.namo.dist.server.RequestContext;
 import com.namo.dist.server.RequestResponseExchange;
 import com.namo.dist.server.RequestResponseProcessor;
+import com.namo.dist.server.ResponseCodes;
 
 /**
  * Generates and compares Etag headers. For cases when request headers contain
@@ -34,7 +35,7 @@ class ETagRRProcessor implements RequestResponseProcessor {
 			// Given the current calculated etag matches what was sent in request header,
 			// then return 304 response code to indicate cached version is still good.
 			if (exchange.getRequestHeaders().get(IF_MATCH_HEADER_KEY).contains(eTagValue)) {
-				ctx.setResponseCode(304);
+				ctx.setResponseCode(ResponseCodes.CACHED.getResponseCode());
 			}
 		}
 		if (nextProcessor != null) {

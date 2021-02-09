@@ -6,11 +6,12 @@ import java.time.format.DateTimeFormatter;
 import com.namo.dist.server.RequestContext;
 import com.namo.dist.server.RequestResponseExchange;
 import com.namo.dist.server.RequestResponseProcessor;
+import com.namo.dist.server.ResponseCodes;
 
 /**
- * Processor to check last modified timestamp on the file and add the response
+ * Processor to check last modified time stamp on the file and add the response
  * header accordingly. Also if request header contains cached file last
- * modification timestamp, then compre the cached to current time stamp and if
+ * modification time stamp, then compare the cached to current time stamp and if
  * cached one happens to be up-to-date then returns 304 response.
  */
 class LastModifiedRRProcessor implements RequestResponseProcessor {
@@ -41,7 +42,7 @@ class LastModifiedRRProcessor implements RequestResponseProcessor {
 			// code.
 			if (!ctx.getRequestedFileProcessor().isModifiedAfter(modifiedSinceStr,
 					DateTimeFormatter.RFC_1123_DATE_TIME)) {
-				ctx.setResponseCode(304);
+				ctx.setResponseCode(ResponseCodes.CACHED.getResponseCode());
 			}
 		}
 		if (nextProcessor != null) {
